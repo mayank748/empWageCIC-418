@@ -52,6 +52,15 @@ checkAttendance=$((RANDOM%3))
 		*)
 			echo "Employee is absent"
 	esac
+if [ $workedDay -le $WORKED_DAYS_FOR_MONTH ] &&
+ [ $previousTotalWorkingHour -le $TOTAL_WORKING_HOUr_POSSIBLE ]
+then
+	if [ $checkAttendance -eq $isPresent ] || [ $checkAttendance -eq $isPartTime ]
+	then
+		valueInArrayToBeStored=$valueInArrayToBeStored" ,"
+	fi
+fi
+
 
 			dailyWageInArray[ $workedDay ]=$valueInArrayToBeStored
 ((workedDay++))
