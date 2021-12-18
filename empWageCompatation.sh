@@ -10,6 +10,8 @@ TOTAL_WORKING_HOUr_POSSIBLE=100
 workedDay=1
 totalSalary=0
 previousTotalWorkingHour=0
+valueInArrayToBeStored="{dailyWage :" 0 "totalWage :" $totalSalary "}"
+dailyWageInArray[ $workedDay ]=$valueInArrayToBeStored
 
 function wageCalculation(){
 	local workingHourPerDay=$1
@@ -17,7 +19,10 @@ function wageCalculation(){
 	local totalSalaryworkedDaysForMonth=$3
 	dayWage=$(( $workingHourPerDay * $wageRecivedPerHour ))
 	totalSalaryworkedDaysForMonth=$(( $dayWage  + $totalSalaryworkedDaysForMonth ))
-	echo $totalSalaryworkedDaysForMonth
+	totalSalary=$totalSalaryworkedDaysForMonth
+	local valueForArray=`echo "{dailyWage :" $dayWage "totalWage :" $totalSalaryworkedDaysForMonth "}"`
+	valueInArrayToBeStored=$valueForArray
+	#echo $totalSalaryworkedDaysForMonth
 }
 
 function totalHour(){
@@ -32,16 +37,24 @@ checkAttendance=$((RANDOM%3))
 	case $checkAttendance in 
 		$isPresent)
 			echo "Employee is present"
-			totalSalary=`wageCalculation $FULL_DAY_HOUR $WAGE_PER_HOUR $totalSalary`
+			#totalSalary=`wageCalculation $FULL_DAY_HOUR $WAGE_PER_HOUR $totalSalary`
+			wageCalculation $FULL_DAY_HOUR $WAGE_PER_HOUR $totalSalary
 			previousTotalWorkingHour=`totalHour $previousTotalWorkingHour $FULL_DAY_HOUR`
-			echo $totalSalary;;
+			#echo $totalSalary
+			;;
 		$isPartTime)
 			echo "Employee is doing parttime"
-			totalSalary=`wageCalculation $PARTTIME_WORKING_HOUR $WAGE_PER_HOUR $totalSalary`
+			#totalSalary=
+			wageCalculation $PARTTIME_WORKING_HOUR $WAGE_PER_HOUR $totalSalary
 			previousTotalWorkingHour=`totalHour $previousTotalWorkingHour  $PARTTIME_WORKING_HOUR`
-			echo $totalSalary;;
+			#echo $totalSalary
+			;;
 		*)
 			echo "Employee is absent"
 	esac
+
+			dailyWageInArray[ $workedDay ]=$valueInArrayToBeStored
 ((workedDay++))
 done
+
+echo ${dailyWageInArray[@]}
