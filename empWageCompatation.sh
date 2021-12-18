@@ -1,5 +1,7 @@
 #! /bin/bash/ -x
 echo "Welcome to emp wage computation"
+
+declare -A dictionaryToStorValue
 isPresent='1'
 isPartTime='2'
 WAGE_PER_HOUR=20
@@ -62,8 +64,10 @@ then
 fi
 
 
-			dailyWageInArray[ $workedDay ]=$valueInArrayToBeStored
+			#dailyWageInArray[ $workedDay ]=$valueInArrayToBeStored
+			dictionaryToStorValue[ $workedDay ]=$valueInArrayToBeStored
 ((workedDay++))
 done
 
-echo ${dailyWageInArray[@]}
+echo "Values in dictionary "${dictionaryToStorValue[@]}
+echo "keys of the dictionary " ${!dictionaryToStorValue[@]}
